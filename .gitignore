@@ -286,3 +286,9 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# Rider junk
+.idea/
+
+# Mac junk
+.DS_Store
