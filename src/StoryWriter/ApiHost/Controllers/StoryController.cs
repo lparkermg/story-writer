@@ -84,6 +84,7 @@ namespace ApiHost.Controllers
             if (String.IsNullOrWhiteSpace(item.Content))
                 return false;
 
+            //TODO: Make wordcount configurable.
             if (Regex.Matches(item.Content, @"[\S]+").Count > 300)
                 return false;
 
