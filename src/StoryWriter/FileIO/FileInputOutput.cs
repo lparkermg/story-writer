@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Json;
 using Newtonsoft.Json;
 
 namespace FileIO
 {
-    public static class FileIo
+    public static class FileInputOutput
     {
         private static bool _initialised;
         private static string _filePath;

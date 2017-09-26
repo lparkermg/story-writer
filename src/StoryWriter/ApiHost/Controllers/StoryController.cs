@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ApiHost.Models;
 using Microsoft.AspNetCore.Mvc;
+using FileIO;
 namespace ApiHost.Controllers
 {
     [Route("api/[controller]")]
@@ -16,6 +17,7 @@ namespace ApiHost.Controllers
         public StoryController()
         {
             //TODO: Load story items here. <- YOU KNOW, FILEIO?
+            FileInputOutput.Initialise($"{AppDomain.CurrentDomain.BaseDirectory}/storyMaster.json");
         }
 
         [HttpGet]
@@ -25,7 +27,7 @@ namespace ApiHost.Controllers
         }
 
         [HttpGet("{id}", Name = "GetStory")]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(Guid id)
         {
             var item = _storyItems.FirstOrDefault(s => s.Id == id);
             if (item == null)
@@ -38,48 +40,48 @@ namespace ApiHost.Controllers
         {
             if (IsStoryItemValid(item))
                 return BadRequest();
-            
+
+            item.Id = Guid.NewGuid();
             _storyItems.Add(item);
             //TODO: Add File IO where it updates a master list.
-            //_context.SaveChanges();
+            FileInputOutput.Update(_storyItems);
 
             return CreatedAtRoute("GetStory", new {id = item.Id}, item);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] StoryItem item)
+        public IActionResult Update(Guid id, [FromBody] StoryItem item)
         {
             if (IsStoryItemValid(item) || item.Id != id)
                 return BadRequest();
 
-            var story = _storyItems.FirstOrDefault(s => s.Id == id);
+            StoryItem story = _storyItems.FirstOrDefault(s => s.Id == id);
             if (story == null)
                 return NotFound();
-
-            story.Title = item.Title;
-            story.Content = item.Content;
-            //TODO: Fix this and have the master json? file updating
-            //_storyItems.Update(story);
-            //_context.SaveChanges();
+            var itemIndex = _storyItems.FindIndex(s => s.Id == story.Id);
+            _storyItems[itemIndex] = item;
+            FileInputOutput.Update(_storyItems);
             
             return new NoContentResult();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(Guid id)
         {
             var story = _storyItems.FirstOrDefault(s => s.Id == id);
             if (story == null)
                 return NotFound();
 
             _storyItems.Remove(story);
-            //TODO: File IO things famalam!
-            //_context.SaveChanges();
+            FileInputOutput.Update(_storyItems);
             return new NoContentResult();
         }
 
         private bool IsStoryItemValid(StoryItem item)
         {
+            if (item.Id == Guid.Empty)
+                return false;
+            
             if (String.IsNullOrWhiteSpace(item?.Title))
                 return false;
 
