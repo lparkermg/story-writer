@@ -11,23 +11,23 @@ namespace ApiHost.Controllers
     [Route("api/[controller]")]
     public class StoryController : Controller
     {
-        private readonly StoryContext _context;
+        private readonly List<StoryItem> _storyItems;
 
-        public StoryController(StoryContext context)
+        public StoryController()
         {
-            _context = context;
+            //TODO: Load story items here. <- YOU KNOW, FILEIO?
         }
 
         [HttpGet]
         public IEnumerable<StoryItem> GetAll()
         {
-            return _context.StoryItems.ToList();
+            return _storyItems;
         }
 
         [HttpGet("{id}", Name = "GetStory")]
         public IActionResult GetById(int id)
         {
-            var item = _context.StoryItems.FirstOrDefault(s => s.Id == id);
+            var item = _storyItems.FirstOrDefault(s => s.Id == id);
             if (item == null)
                 return NotFound();
             return new ObjectResult(item);
@@ -39,8 +39,9 @@ namespace ApiHost.Controllers
             if (IsStoryItemValid(item))
                 return BadRequest();
             
-            _context.StoryItems.Add(item);
-            _context.SaveChanges();
+            _storyItems.Add(item);
+            //TODO: Add File IO where it updates a master list.
+            //_context.SaveChanges();
 
             return CreatedAtRoute("GetStory", new {id = item.Id}, item);
         }
@@ -51,15 +52,15 @@ namespace ApiHost.Controllers
             if (IsStoryItemValid(item) || item.Id != id)
                 return BadRequest();
 
-            var story = _context.StoryItems.FirstOrDefault(s => s.Id == id);
+            var story = _storyItems.FirstOrDefault(s => s.Id == id);
             if (story == null)
                 return NotFound();
 
             story.Title = item.Title;
             story.Content = item.Content;
-
-            _context.StoryItems.Update(story);
-            _context.SaveChanges();
+            //TODO: Fix this and have the master json? file updating
+            //_storyItems.Update(story);
+            //_context.SaveChanges();
             
             return new NoContentResult();
         }
@@ -67,12 +68,13 @@ namespace ApiHost.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var story = _context.StoryItems.FirstOrDefault(s => s.Id == id);
+            var story = _storyItems.FirstOrDefault(s => s.Id == id);
             if (story == null)
                 return NotFound();
 
-            _context.StoryItems.Remove(story);
-            _context.SaveChanges();
+            _storyItems.Remove(story);
+            //TODO: File IO things famalam!
+            //_context.SaveChanges();
             return new NoContentResult();
         }
 
