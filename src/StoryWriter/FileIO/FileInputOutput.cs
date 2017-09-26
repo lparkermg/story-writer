@@ -10,10 +10,15 @@ namespace FileIO
         private static bool _initialised;
         private static string _filePath;
         
-        public static void Initialise(string filePath)
+        public static void Initialise<T>(string filePath)
         {
             _filePath = filePath;
             _initialised = true;
+            if (!File.Exists(filePath))
+            {
+                Update(new List<T>());
+            }
+            
         }
 
         public static void Update<T>(List<T> toUpdate)

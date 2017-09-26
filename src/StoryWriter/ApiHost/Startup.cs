@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiHost.Models;
+using FileIO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +37,7 @@ namespace ApiHost
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            FileInputOutput.Initialise<StoryItem>($"{AppDomain.CurrentDomain.BaseDirectory}/storyMaster.json");
             app.UseMvc();
         }
     }

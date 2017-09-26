@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 using ApiHost.Models;
 using Microsoft.AspNetCore.Mvc;
 using FileIO;
+using Newtonsoft.Json;
+
 namespace ApiHost.Controllers
 {
     [Route("api/[controller]")]
     public class StoryController : Controller
     {
-        private readonly List<StoryItem> _storyItems;
+        private List<StoryItem> _storyItems;
 
         public StoryController()
         {
-            //TODO: Load story items here. <- YOU KNOW, FILEIO?
-            FileInputOutput.Initialise($"{AppDomain.CurrentDomain.BaseDirectory}/storyMaster.json");
+            _storyItems = FileInputOutput.LoadMaster<StoryItem>();
         }
 
         [HttpGet]
@@ -29,6 +30,9 @@ namespace ApiHost.Controllers
         [HttpGet("{id}", Name = "GetStory")]
         public IActionResult GetById(Guid id)
         {
+            if (id == Guid.Empty)
+                return BadRequest();
+            
             var item = _storyItems.FirstOrDefault(s => s.Id == id);
             if (item == null)
                 return NotFound();
@@ -36,30 +40,45 @@ namespace ApiHost.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] StoryItem item)
+        public IActionResult Create([FromBody] StoryItemRequest item)
         {
-            if (IsStoryItemValid(item))
+            
+            var story = new StoryItem()
+            {
+                Id = Guid.NewGuid(),
+                Title = item.Title,
+                Content = item.Content
+            };
+            
+            if (IsStoryItemValid(story))
                 return BadRequest();
 
-            item.Id = Guid.NewGuid();
-            _storyItems.Add(item);
+            _storyItems.Add(story);
             //TODO: Add File IO where it updates a master list.
             FileInputOutput.Update(_storyItems);
 
-            return CreatedAtRoute("GetStory", new {id = item.Id}, item);
+            return CreatedAtRoute("GetStory", new {id = story.Id}, item);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] StoryItem item)
+        public IActionResult Update(Guid id, [FromBody] StoryItemRequest item)
         {
-            if (IsStoryItemValid(item) || item.Id != id)
+            var storyUpdate = new StoryItem()
+            {
+                Id = id,
+                Title = item.Title,
+                Content = item.Content
+            };
+            
+            if (IsStoryItemValid(storyUpdate))
                 return BadRequest();
 
             StoryItem story = _storyItems.FirstOrDefault(s => s.Id == id);
             if (story == null)
                 return NotFound();
+            
             var itemIndex = _storyItems.FindIndex(s => s.Id == story.Id);
-            _storyItems[itemIndex] = item;
+            _storyItems[itemIndex] = storyUpdate;
             FileInputOutput.Update(_storyItems);
             
             return new NoContentResult();
