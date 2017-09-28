@@ -50,7 +50,7 @@ namespace ApiHost.Controllers
                 Content = item.Content
             };
             
-            if (IsStoryItemValid(story))
+            if (!IsStoryItemValid(story))
                 return BadRequest();
 
             _storyItems.Add(story);
@@ -70,7 +70,7 @@ namespace ApiHost.Controllers
                 Content = item.Content
             };
             
-            if (IsStoryItemValid(storyUpdate))
+            if (!IsStoryItemValid(storyUpdate))
                 return BadRequest();
 
             StoryItem story = _storyItems.FirstOrDefault(s => s.Id == id);

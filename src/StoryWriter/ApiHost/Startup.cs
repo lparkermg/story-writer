@@ -27,6 +27,7 @@ namespace ApiHost
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddDbContext<StoryContext>(opt => opt.UseInMemoryDatabase("StoryList"));
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -38,6 +39,12 @@ namespace ApiHost
                 app.UseDeveloperExceptionPage();
             }
             FileInputOutput.Initialise<StoryItem>($"{AppDomain.CurrentDomain.BaseDirectory}/storyMaster.json");
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins("http://localhost:3000");
+                builder.AllowAnyHeader();
+            });
+                
             app.UseMvc();
         }
     }

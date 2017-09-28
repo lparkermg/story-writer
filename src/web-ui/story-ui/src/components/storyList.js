@@ -1,6 +1,8 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 
+import Api from '../api/api';
+
 const StoryListComponent = createReactClass({
     getInitialState: function(){
         return {
@@ -16,8 +18,16 @@ const StoryListComponent = createReactClass({
     },
     _init: function(props){
         this.setState({stories: [], loadedStories: false});
+        this._loadStories();
     },
     _loadStories: function(){
+        Api.getStories().then(res =>
+        {
+            this.setState({stories: res.data, loadedStories:true});
+            console.log(this.state.stories);
+        },err => {
+
+        })
         //Load Stoies here!
     },
     _saveNewStory: function(story){
