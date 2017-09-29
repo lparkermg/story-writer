@@ -7,7 +7,12 @@ import StoryList from './components/storyList';
 class App extends Component {
   render() {
     return (
-      <StoryList />
+        <div>
+            <div className='navigation-bar'>
+                Story Writer
+            </div>
+            <StoryList />
+        </div>
     );
   }
 }
