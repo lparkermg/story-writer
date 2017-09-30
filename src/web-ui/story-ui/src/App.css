@@ -103,6 +103,15 @@ th, td {
     resize:none;
 }
 
+.submit-button{
+    height:2rem !important;
+    width:4rem !important;
+}
+
+.submit-row{
+    padding:0rem !important;
+}
+
 .story-listitem{
     border-bottom:1px solid #EEE;
 }

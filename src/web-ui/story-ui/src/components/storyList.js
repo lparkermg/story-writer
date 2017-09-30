@@ -40,7 +40,14 @@ const StoryListComponent = createReactClass({
     _deleteStory: function(id){
         console.log(id);
     },
+    _makeStoryLine: function(story){
+        return <StoryLine key={story.id} story={story} buttonOnClick={() => {this._deleteStory(story.id)}}/>
+    },
     render: function(){
+        const storyLines = this.state.stories.map(s => {
+            const line = [this._makeStoryLine(s)];
+            return line;
+        });
         return (
             <div>
                 <div className='title-bar'>
@@ -66,7 +73,10 @@ const StoryListComponent = createReactClass({
                             <td><textarea className='input-content' name='content' rows='10'/></td>
                         </tr>
                         <tr>
-                            <td><button className='btn btn--primary' type='button'>Submit</button></td>
+                            <td className='submit-row'><button className='btn btn--primary submit-button' type='button'>Submit</button></td>
+                        </tr>
+                        <tr>
+                            <td />
                         </tr>
                     </tbody>
                 </table>
@@ -79,11 +89,7 @@ const StoryListComponent = createReactClass({
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className='story-listitem'>
-                            <td>Title</td>
-                            <td>This is some content (But it's invalid because it's under 300 words)</td>
-                            <td><button className='btn btn--danger' type='button'>Delete Story</button></td>
-                        </tr>
+                        {[].concat.apply([],storyLines)}
                     </tbody>
                 </table>
             </div>
@@ -92,4 +98,14 @@ const StoryListComponent = createReactClass({
     }
 });
 
+
+const StoryLine = ({ story , buttonOnClick}) => {
+    return(
+    <tr className='story-listitem'>
+        <td>{story.title}</td>
+        <td>{story.content}</td>
+        <td><button className='btn btn--danger' onClick={buttonOnClick} type='button'>Delete Story</button></td>
+    </tr>
+    );
+}
 export default StoryListComponent;
