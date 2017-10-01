@@ -39,7 +39,6 @@ const StoryListComponent = createReactClass({
         var content = this.state.editorContent;
         var title = this.state.editorTitle;
         var id = this.state.editingId;
-
         if(id === null){
             var story = {
                 title:title,
@@ -108,10 +107,10 @@ const StoryListComponent = createReactClass({
                             <td>Title:</td>
                         </tr>
                         <tr>
-                            <td><input className='input-title' onChange={e => this.setState({editorTitle: e.target.value})} type='text'/></td>
+                            <td><input id='content-box' className='input-title' onChange={e => this.setState({editorTitle: e.target.value})} type='text'/></td>
                         </tr>
                         <tr>
-                            <td>Content (Between 300 ~ 500 Words):</td>
+                            <td>Content (Between 150 ~ 500 Words):</td>
                         </tr>
                         <tr>
                             <td><textarea className='input-content' onChange={e => this.setState({editorContent: e.target.value})} name='content' rows='10'/></td>
@@ -147,7 +146,7 @@ const StoryLine = ({ story , buttonOnClick}) => {
     return(
     <tr className='story-listitem'>
         <td>{story.title}</td>
-        <td>{story.content}</td>
+        <td><div className='content-wrap'>{story.content}</div></td>
         <td><button className='btn btn--danger' onClick={buttonOnClick} type='button'>Delete Story</button></td>
     </tr>
     );

@@ -78,6 +78,10 @@ button + button, .btn + button, .btn--primary + button, button + .btn, button + 
     float:right;
 }
 
+.content-wrap{
+    white-space:pre-wrap;
+}
+
 th, td {
     padding:0.5rem;
 }
