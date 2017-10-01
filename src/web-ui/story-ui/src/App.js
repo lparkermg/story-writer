@@ -9,7 +9,7 @@ class App extends Component {
     return (
         <div>
             <div className='navigation-bar'>
-                Story Writer
+                Story Writer Service
             </div>
             <StoryList />
         </div>

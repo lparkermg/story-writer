@@ -34,7 +34,6 @@ function sendRequest(path, action, data, json, returnXHR, withoutApiBase) {
           request.open(action,path,true);
         }
         request.setRequestHeader('Accept', 'application/json');
-
         if(json) {
             data = JSON.stringify(data);
             request.setRequestHeader('Content-Type', 'application/json');

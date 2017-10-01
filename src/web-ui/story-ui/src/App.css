@@ -62,6 +62,20 @@ button + button, .btn + button, .btn--primary + button, button + .btn, button + 
     background-color: #38A5FF;
     color: #FEFEFE;
     padding:0.75rem;
+    font-weight: 600;
+}
+
+.title-options{
+    display:flex;
+    margin: -0.55rem -0.25rem;
+}
+
+.title-options .btn, .title-options .btn--primary {
+  line-height: 1rem;
+  padding: 0.5rem; }
+
+.right{
+    float:right;
 }
 
 th, td {

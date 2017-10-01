@@ -41,8 +41,7 @@ namespace ApiHost
             FileInputOutput.Initialise<StoryItem>($"{AppDomain.CurrentDomain.BaseDirectory}/storyMaster.json");
             app.UseCors(builder =>
             {
-                builder.WithOrigins("http://localhost:3000");
-                builder.AllowAnyHeader();
+                builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
             });
                 
             app.UseMvc();

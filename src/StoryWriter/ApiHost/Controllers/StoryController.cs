@@ -108,7 +108,7 @@ namespace ApiHost.Controllers
                 return false;
 
             //TODO: Make wordcount configurable.
-            if (Regex.Matches(item.Content, @"[\S]+").Count < 300)
+            if (Regex.Matches(item.Content, @"[\S]+").Count < 150)
                 return false;
             
             if (Regex.Matches(item.Content, @"[\S]+").Count > 500)
