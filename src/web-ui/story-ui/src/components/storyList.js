@@ -1,6 +1,6 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-
+import Truncate from 'react-truncate';
 import Api from '../api/api';
 
 const StoryListComponent = createReactClass({
@@ -76,11 +76,14 @@ const StoryListComponent = createReactClass({
         })
     },
     _makeStoryLine: function(story){
-        return <StoryLine key={story.id} story={story} buttonOnClick={() => this._deleteStory(story.id)}/>
+        return <StoryLine key={story.id} story={story} deleteOnClick={() => this._deleteStory(story.id)} showOnClick={() => this._showStory(story.id)} />
     },
     _toggleNewStory: function(){
         var newStory = this.state.showingNewStory;
         this.setState({showingNewStory: !newStory});
+    },
+    _showStory: function(storyId){
+        this.props.history.push('/' + storyId);
     },
     render: function(){
         const storyLines = this.state.stories.map(s => {
@@ -142,12 +145,12 @@ const StoryListComponent = createReactClass({
 });
 
 
-const StoryLine = ({ story , buttonOnClick}) => {
+const StoryLine = ({ story, deleteOnClick, showOnClick}) => {
     return(
     <tr className='story-listitem'>
         <td>{story.title}</td>
-        <td><div className='content-wrap'>{story.content}</div></td>
-        <td><button className='btn btn--danger' onClick={buttonOnClick} type='button'>Delete Story</button></td>
+        <td><Truncate limes={2} ellipsis={<span>...</span>}>{story.content}</Truncate></td>
+        <td><button className='btn btn--primary' type='button' onClick={showOnClick}>Show Story</button><button className='btn btn--danger' onClick={deleteOnClick} type='button'>Delete Story</button></td>
     </tr>
     );
 }

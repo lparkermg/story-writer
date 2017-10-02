@@ -31,20 +31,29 @@ button, .btn, .btn--primary{
     font-family:inherit;
     font-size: 0.75rem;
     font-weight:700;
-    margin:0;
-    padding:calc(0.125rem -1px) calc(1rem - 1px);
+    margin:0.1rem;
+    padding:calc(0.25rem -1px) calc(1rem - 1px);
+
 }
 
 button + button, .btn + button, .btn--primary + button, button + .btn, button + .btn--primary, .btn + .btn, .btn--primary + .btn, .btn + .btn--primary, .btn--primary + .btn--primary {
     margin-left: 0.25rem; }
 
 .btn--primary {
-  background-color: #009cdb;
-  color: #fff; }
+    display:inline-grid;
+    width:40%;
+    height:100%;
+    background-color: #009cdb;
+    color: #fff;
+ }
 
 .btn--danger {
-  border-color: #F22 !important;
-  color: #F22 !important; }
+    display:inline-grid;
+    width:40%;
+    height:100% ;
+    border-color: #F22 !important;
+    color: #F22 !important;
+}
 
 .btn--indented {
   margin: 0.25rem 0 0 40%; }
@@ -72,7 +81,8 @@ button + button, .btn + button, .btn--primary + button, button + .btn, button + 
 
 .title-options .btn, .title-options .btn--primary {
   line-height: 1rem;
-  padding: 0.5rem; }
+  padding: 0.5rem;
+}
 
 .right{
     float:right;
@@ -91,11 +101,11 @@ th, td {
 }
 
 .content-col{
-    width:85%;
+    width:75%;
 }
 
 .button-col{
-    width:5%;
+    width:15%;
 }
 
 .table__stories{
@@ -105,12 +115,14 @@ th, td {
     border-collapse: collapse;
 }
 
-.table__newstory{
+.table__newstory, .table__showstory{
     width:80%;
     margin-right:auto;
     margin-left:auto;
     border-collapse:collapse;
 }
+
+
 
 .input-title{
     width:25%;
