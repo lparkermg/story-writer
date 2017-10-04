@@ -50,7 +50,7 @@ namespace ApiHost.Controllers
                 Content = item.Content
             };
             
-            if (IsStoryItemValid(story))
+            if (!IsStoryItemValid(story))
                 return BadRequest();
 
             _storyItems.Add(story);
@@ -70,7 +70,7 @@ namespace ApiHost.Controllers
                 Content = item.Content
             };
             
-            if (IsStoryItemValid(storyUpdate))
+            if (!IsStoryItemValid(storyUpdate))
                 return BadRequest();
 
             StoryItem story = _storyItems.FirstOrDefault(s => s.Id == id);
@@ -108,7 +108,7 @@ namespace ApiHost.Controllers
                 return false;
 
             //TODO: Make wordcount configurable.
-            if (Regex.Matches(item.Content, @"[\S]+").Count < 300)
+            if (Regex.Matches(item.Content, @"[\S]+").Count < 150)
                 return false;
             
             if (Regex.Matches(item.Content, @"[\S]+").Count > 500)
