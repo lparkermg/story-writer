@@ -47,6 +47,12 @@ button + button, .btn + button, .btn--primary + button, button + .btn, button + 
     color: #fff;
  }
 
+.btn--disabled {
+    display:inline-grid;
+    height:100%;
+    background-color: #CCCCCC;
+}
+
 .btn--danger {
     display:inline-grid;
     width:40%;
@@ -121,8 +127,6 @@ th, td {
     margin-left:auto;
     border-collapse:collapse;
 }
-
-
 
 .input-title{
     width:25%;

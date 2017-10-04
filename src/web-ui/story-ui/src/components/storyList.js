@@ -2,6 +2,7 @@ import React from 'react';
 import createReactClass from 'create-react-class';
 import Truncate from 'react-truncate';
 import Api from '../api/api';
+import wordcount from 'wordcount';
 
 const StoryListComponent = createReactClass({
     getInitialState: function(){
@@ -11,7 +12,8 @@ const StoryListComponent = createReactClass({
             showingNewStory: false,
             editorTitle:"",
             editorContent:"",
-            editingId: null
+            editingId: null,
+            currentWordCount: 0
         };
     },
     componentDidMount: function(){
@@ -49,6 +51,7 @@ const StoryListComponent = createReactClass({
                 this._loadStories();
             },err => {
                 //TODO: Show a message
+                console.log(err);
                 alert(err);
 
             });
@@ -85,6 +88,10 @@ const StoryListComponent = createReactClass({
     _showStory: function(storyId){
         this.props.history.push('/' + storyId);
     },
+    _updateWordCount: function(story){
+        console.log('WORDS!!!');
+        this.setState({currentWordCount: wordcount(story)});
+    },
     render: function(){
         const storyLines = this.state.stories.map(s => {
             const line = [this._makeStoryLine(s)];
@@ -113,13 +120,13 @@ const StoryListComponent = createReactClass({
                             <td><input id='content-box' className='input-title' onChange={e => this.setState({editorTitle: e.target.value})} type='text'/></td>
                         </tr>
                         <tr>
-                            <td>Content (Between 150 ~ 500 Words):</td>
+                            <td>Content ({this.state.currentWordCount}/150 Min):</td>
                         </tr>
                         <tr>
-                            <td><textarea className='input-content' onChange={e => this.setState({editorContent: e.target.value})} name='content' rows='10'/></td>
+                            <td><textarea className='input-content' onChange={e => {this.setState({editorContent: e.target.value}); this._updateWordCount(e.target.value)}} name='content' rows='10'/></td>
                         </tr>
                         <tr>
-                            <td className='submit-row'><button className='btn btn--primary submit-button' onClick={this._saveStory} type='button'>Submit</button></td>
+                            <td className='submit-row'><button className={this.state.currentWordCount > 149 ? 'btn btn--primary submit-button' : 'btn btn--disabled'} disabled={this.state.currentWordCount < 150} onClick={this._saveStory} type='button'>Submit</button></td>
                         </tr>
                         <tr>
                             <td />
